@@ -1,10 +1,15 @@
 class Player {
-  constructor() {
+  constructor(whichCard) {
+    console.log(whichCard);
     this.handCard = [];
+    this.handCardTable = document.querySelector(whichCard + ' tr');
+    console.log(this.handCardTable);
   }
   displayHandCard() {
     for (let card of this.handCard) {
-      console.log(card + ' ');
+      let insertTag = document.createElement('td');
+      insertTag.textContent = card;
+      this.handCardTable.appendChild(insertTag);
     }
   }
 }
@@ -43,8 +48,8 @@ class NumberCard {
   }
 }
 
-let p1 = new Player();
-let p2 = new Player();
+let p1 = new Player('.yourCard');
+let p2 = new Player('.Card');
 
 let nc = new NumberCard();
 let d = new Dealer(nc.card);
