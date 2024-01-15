@@ -8,7 +8,7 @@ class Player {
   displayHandCard() {
     for (let card of this.handCard) {
       let insertTag = document.createElement('td');
-      insertTag.textContent = card;
+      insertTag.innerHTML = `<img src="images/${card}.png">`;
       this.handCardTable.appendChild(insertTag);
     }
   }
