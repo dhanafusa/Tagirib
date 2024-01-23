@@ -68,44 +68,29 @@ class ConsecutiveNumbers extends DetailQuestionCard {
     super();
     this.question = '連番になっているカードはどこ？';
   }
-
+  //連番アルゴリズム
+  //まず、左から検査。検査内容は自分自身に１を足したものが次の要素にあるか・
+  //なければ次の要素を同じように検索、あればスタート添え字をを配列に格納する。
+  //そして、自分自身に１を足したものが次の要素になければ連番が終了となり、終了添え字を配列に格納する
+  //それを４枚目まで繰り返す。５枚目は次の要素を見れないから除外。
+  //2つの連番がある場合には、「左から〇と〇、〇と●が連番です」というように、「、」を入れて連結する。
   answer(p) {
-    const consecutiveRanges = [];
-
-    let currentConsecutiveRange = [1];
-
-    for (let i = 1; i < p.handCard.length; i++) {
-      const currentNumber = parseInt(p.handCard[i].slice(0, -1));
-      const prevNumber = parseInt(p.handCard[i - 1].slice(0, -1));
-
-      if (currentNumber - prevNumber === 1) {
-        // 連番の場合、i番目も連番に含める
-        currentConsecutiveRange.push(i + 1);
-      } else {
-        // 連番でない場合、現在の連番が2つ以上であれば追加
-        if (currentConsecutiveRange.length >= 2) {
-          consecutiveRanges.push([...currentConsecutiveRange]);
+    let startIndex = [];
+    let endIndex = [];
+    for (let i = 0; i < p.handCard.length - 1; i++) {
+      if (p.handCard[i] + 1 == p.handCard[i + 1]) {
+        startIndex.push(i);
+        endIndex.push(i + 1);
+        for (let j = i + 1; j < p.handCard.length - 1; j++) {
+          if (p.handCard[j] + 1 != p.handCard[j + 1]) {
+            endIndex.push(j);
+            break;
+          }
         }
-
-        // 新しい連番の開始
-        currentConsecutiveRange = [i + 1];
+        i = j;
       }
     }
-
-    // 最後の範囲が2つ以上で終わる場合
-    if (currentConsecutiveRange.length >= 2) {
-      consecutiveRanges.push([...currentConsecutiveRange]);
-    }
-
-    // 連続する範囲を正確に表示する処理
-    const formattedRanges = consecutiveRanges.map((range) => {
-      const start = range[0];
-      const end = range[range.length - 1];
-      const rangeDescription = range.length > 2 ? `から${end}番目まで` : `と${end}番目`;
-      return `左から${start}番目${rangeDescription}が連番です`;
-    });
-
-    return formattedRanges;
+    return startIndex;
   }
 }
 
