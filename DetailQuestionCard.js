@@ -75,14 +75,15 @@ class ConsecutiveNumbers extends DetailQuestionCard {
   //それを４枚目まで繰り返す。５枚目は次の要素を見れないから除外。
   //2つの連番がある場合には、「左から〇と〇、〇と●が連番です」というように、「、」を入れて連結する。
   answer(p) {
-    let startIndex = [];
+    let startIndex = [1];
     let endIndex = [];
+    let j;
+    let text = '';
     for (let i = 0; i < p.handCard.length - 1; i++) {
-      if (p.handCard[i] + 1 == p.handCard[i + 1]) {
+      if (parseInt(p.handCard[i].slice(0, 1)) + 1 === parseInt(p.handCard[i + 1].slice(0, 1))) {
         startIndex.push(i);
-        endIndex.push(i + 1);
-        for (let j = i + 1; j < p.handCard.length - 1; j++) {
-          if (p.handCard[j] + 1 != p.handCard[j + 1]) {
+        for (j = i + 1; j < p.handCard.length - 1; j++) {
+          if (parseInt(p.handCard[j].slice(0, 1)) + 1 !== parseInt(p.handCard[j + 1].slice(0, 1))) {
             endIndex.push(j);
             break;
           }
@@ -90,7 +91,13 @@ class ConsecutiveNumbers extends DetailQuestionCard {
         i = j;
       }
     }
-    return startIndex;
+    for (let i = 0; i < startIndex.length; i++) {
+      text += `左から${startIndex[i]}番目から${endIndex[i]}番目`;
+      if (i > 0) {
+        text += 'と、';
+      }
+    }
+    return `${text}が連番です`;
   }
 }
 
