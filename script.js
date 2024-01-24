@@ -1,7 +1,7 @@
-import Player from './Player.js';
-import Dealer from './Dealer.js';
-import NumberCard from './NumberCard.js';
-import { redSum, blueSum, AnotherQuestion, ConsecutiveNumbers, threeFromLargest } from './DetailQuestionCard.js';
+import Player from './src/Player.js';
+import Dealer from './src/Dealer.js';
+import NumberCard from './src/NumberCard.js';
+import { redSum, blueSum, AnotherQuestion, ConsecutiveNumbers, threeFromLargest } from './src/DetailQuestionCard.js';
 
 let p1 = new Player('.yourCard');
 let p2 = new Player('.Card');
