@@ -68,39 +68,46 @@ class ConsecutiveNumbers extends DetailQuestionCard {
     super();
     this.question = '連番になっているカードはどこ？';
   }
-  //連番アルゴリズム
-  //まず、左から検査。検査内容は自分自身に１を足したものが次の要素にあるか・
-  //なければ次の要素を同じように検索、あればスタート添え字をを配列に格納する。
-  //そして、自分自身に１を足したものが次の要素になければ連番が終了となり、終了添え字を配列に格納する
-  //それを４枚目まで繰り返す。５枚目は次の要素を見れないから除外。
-  //2つの連番がある場合には、「左から〇と〇、〇と●が連番です」というように、「、」を入れて連結する。
+
   answer(p) {
-    let startIndex = [1];
+    let startIndex = [];
     let endIndex = [];
-    let j;
     let text = '';
+
     for (let i = 0; i < p.handCard.length - 1; i++) {
       if (parseInt(p.handCard[i].slice(0, 1)) + 1 === parseInt(p.handCard[i + 1].slice(0, 1))) {
         startIndex.push(i);
+        let j;
+
         for (j = i + 1; j < p.handCard.length - 1; j++) {
           if (parseInt(p.handCard[j].slice(0, 1)) + 1 !== parseInt(p.handCard[j + 1].slice(0, 1))) {
             endIndex.push(j);
             break;
           }
         }
-        i = j;
+
+        if (j === p.handCard.length - 1) {
+          endIndex.push(j);
+        }
+
+        i = j - 1;
       }
     }
+
     for (let i = 0; i < startIndex.length; i++) {
-      text += `左から${startIndex[i]}番目から${endIndex[i]}番目`;
-      if (i > 0) {
+      text += `左から${startIndex[i] + 1}番目から${endIndex[i] + 1}番目`;
+      if (i < startIndex.length - 1) {
         text += 'と、';
       }
     }
+
+    if (text.length === 0) {
+      return '連番はありません';
+    }
+
     return `${text}が連番です`;
   }
 }
-
 export {
   DetailQuestionCard,
   blueSum,
